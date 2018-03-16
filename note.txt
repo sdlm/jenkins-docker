@@ -1,23 +1,15 @@
-sudo docker-compose -f docker-compose-test.yml down --rmi all -v && 
-sudo docker-compose -f docker-compose-test.yml run --rm web pytest --junit-xml=pytests-output.xml &&  
-sudo docker-compose -f docker-compose-test.yml down --rmi all -v
+# build image
+docker build -t sdlmer/jenkins-ci --no-cache .
+docker login
+docker push sdlmer/jenkins-ci
 
-sudo docker-compose -f docker-compose-test.yml down --rmi all -v && 
-sudo docker-compose -f docker-compose-test.yml run --rm web pytest --junit-xml=pytests-output.xml idwell/profile/tests/test_invite.py &&  
-sudo docker-compose -f docker-compose-test.yml down --rmi all -v
+# get up docker-compose
+sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 
-docker build -t jenkins-ci .
-docker run -it -d -p 80:8080 -v /var/run/docker.sock:/var/run/docker.sock --name jenkins-test jenkins-ci
+# exec docker-compose
+docker-compose up -d
 
-docker run -it -d -p 80:8080 -v /var/run/docker.sock:/var/run/docker.sock -v ./old_jenkins:/var/jenkins_home --name jenkins-test jenkins-ci
-
-
-sudo docker-compose -f docker-compose-test.yml run --rm -v /var/tmp/docker:/app/test_results web pytest --junit-xml=/app/test_results/pytests-output.xml idwell/profile/tests/test_invite.py
-
-
-sudo docker run -dit -v /var/tmp/docker:/root/test --name hello-from-jenkins hello-world-test
-
+#
 sudo docker-compose -f docker-compose-test.yml down --rmi all -v && 
 sudo docker-compose -f docker-compose-test.yml run --rm web pytest --junit-xml=/app/test_results/pytests-output.xml idwell/profile/tests/test_invite.py &&  
 sudo docker-compose -f docker-compose-test.yml down --rmi all -v
-
