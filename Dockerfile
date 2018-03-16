@@ -31,5 +31,3 @@ RUN sudo adduser jenkins sudo
 USER jenkins
 
 RUN mkdir -p /var/jenkins_home/workspace/build_idwell/web/test_results
-
-RUN apt-get install -y vim
