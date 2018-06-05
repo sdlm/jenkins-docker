@@ -1,7 +1,7 @@
 # build image
 docker build -t sdlmer/jenkins-ci --no-cache .
 docker login
-docker push sdlmer/jenkins-ci
+docker push sdlmer/jenkins-with-docker
 
 # get up docker-compose
 sudo curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
